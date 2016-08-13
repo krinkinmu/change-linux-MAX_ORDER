@@ -1,0 +1,51 @@
+From 8611da05002c672526b7419ba125ea880d55b1f5 Mon Sep 17 00:00:00 2001
+From: Mike Krinkin <krinkin.m.u@gmail.com>
+Date: Sat, 13 Aug 2016 19:25:00 +0300
+Subject: [PATCH] change MAX_ORDER constant to allow 1GB allocations
+
+Signed-off-by: Mike Krinkin <krinkin.m.u@gmail.com>
+---
+ arch/x86/include/asm/sparsemem.h | 6 +++---
+ include/linux/mmzone.h           | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+index 4517d6b..cd9986f 100644
+--- a/arch/x86/include/asm/sparsemem.h
++++ b/arch/x86/include/asm/sparsemem.h
+@@ -16,16 +16,16 @@
+ 
+ #ifdef CONFIG_X86_32
+ # ifdef CONFIG_X86_PAE
+-#  define SECTION_SIZE_BITS	29
++#  define SECTION_SIZE_BITS	30
+ #  define MAX_PHYSADDR_BITS	36
+ #  define MAX_PHYSMEM_BITS	36
+ # else
+-#  define SECTION_SIZE_BITS	26
++#  define SECTION_SIZE_BITS	30
+ #  define MAX_PHYSADDR_BITS	32
+ #  define MAX_PHYSMEM_BITS	32
+ # endif
+ #else /* CONFIG_X86_32 */
+-# define SECTION_SIZE_BITS	27 /* matt - 128 is convenient right now */
++# define SECTION_SIZE_BITS	30 /* matt - 128 is convenient right now */
+ # define MAX_PHYSADDR_BITS	44
+ # define MAX_PHYSMEM_BITS	46
+ #endif
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index d572b78..3eff4c3 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -21,7 +21,7 @@
+ 
+ /* Free memory management - zoned buddy allocator.  */
+ #ifndef CONFIG_FORCE_MAX_ZONEORDER
+-#define MAX_ORDER 11
++#define MAX_ORDER 19
+ #else
+ #define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
+ #endif
+-- 
+2.7.4
+
